@@ -1,0 +1,23 @@
+name: Build Dockerfile
+
+on:
+  push:
+    paths:
+      - Dockerfile
+      - .github/workflows/docker-build.yml
+      - '**/*.py'
+  pull_request:
+    paths:
+      - Dockerfile
+      - .github/workflows/docker-build.yml
+      - '**/*.py'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Compile Python files
+        run: python -m py_compile bot.py
+      - name: Build Docker image
+        run: docker build -t avangard-bot .
